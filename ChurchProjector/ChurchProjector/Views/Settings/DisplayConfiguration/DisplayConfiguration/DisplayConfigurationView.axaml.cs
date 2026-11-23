@@ -57,7 +57,7 @@ public partial class DisplayConfigurationView : UserControl
             }
 
             string? previousPath = configuration.BackgroundImagePath;
-            configuration.SetBackgroundImage(asset.Path, asset.Image);
+            configuration.SetBackgroundImage(asset.Path, asset);
             DeletePreviousImage(previousPath);
         }
     }

@@ -18,6 +18,9 @@ public partial class SettingsViewModel : ObservableObject
     public void SetMonitors(IDictionary<string, Screen> monitors)
     {
         Monitors = monitors;
+        OnPropertyChanged(nameof(SelectedMonitore));
+        OnPropertyChanged(nameof(PreviewImageWidth));
+        OnPropertyChanged(nameof(PreviewImageHeight));
     }
 
     public Classes.Settings Settings => GlobalConfig.JsonFile.Settings;
@@ -50,6 +53,8 @@ public partial class SettingsViewModel : ObservableObject
 
                 GlobalConfig.JsonFile.Settings.SelectedMonitorName = value.Key;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(PreviewImageWidth));
+                OnPropertyChanged(nameof(PreviewImageHeight));
 
                 WindowState = WindowState.Normal;
                 OnPropertyChanged(nameof(Position));
@@ -73,6 +78,24 @@ public partial class SettingsViewModel : ObservableObject
     {
         get => SelectedMonitore.Value.Bounds.Position;
     }
+
+    private Size PreviewImageSize
+    {
+        get
+        {
+            PixelRect bounds = SelectedMonitore.Value.Bounds;
+            if (bounds.Width <= 0 || bounds.Height <= 0)
+            {
+                return new Size(250, 140.625);
+            }
+
+            double scale = Math.Min(250d / bounds.Width, 250d / bounds.Height);
+            return new Size(bounds.Width * scale, bounds.Height * scale);
+        }
+    }
+
+    public double PreviewImageWidth => PreviewImageSize.Width;
+    public double PreviewImageHeight => PreviewImageSize.Height;
 
     public string BannerFontSizeText => $"{Lang.Resources.FontSize_Colon} {BannerFontSize}";
 

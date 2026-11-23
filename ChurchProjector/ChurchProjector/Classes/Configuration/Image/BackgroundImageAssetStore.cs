@@ -1,10 +1,56 @@
-using SkiaSharp;
+using Avalonia.Media.Imaging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ChurchProjector.Classes.Configuration.Image;
 
-public sealed record BackgroundImageAsset(string Path, SKImage Image);
+public sealed class BackgroundImageAsset
+{
+    private int _referenceCount = 1;
+
+    public string Path { get; }
+    public Bitmap Image { get; }
+
+    internal BackgroundImageAsset(string path, Bitmap image)
+    {
+        Path = path;
+        Image = image;
+    }
+
+    internal void AddReference()
+    {
+        while (true)
+        {
+            int currentCount = System.Threading.Volatile.Read(ref _referenceCount);
+            if (currentCount == 0)
+            {
+                throw new ObjectDisposedException(nameof(BackgroundImageAsset));
+            }
+
+            if (System.Threading.Interlocked.CompareExchange(
+                    ref _referenceCount,
+                    currentCount + 1,
+                    currentCount) == currentCount)
+            {
+                return;
+            }
+        }
+    }
+
+    internal void Release()
+    {
+        int remainingReferences = System.Threading.Interlocked.Decrement(ref _referenceCount);
+        if (remainingReferences == 0)
+        {
+            Image.Dispose();
+        }
+        else if (remainingReferences < 0)
+        {
+            throw new InvalidOperationException("The background image asset was released more than once.");
+        }
+    }
+}
 
 public static class BackgroundImageAssetStore
 {
@@ -12,6 +58,10 @@ public static class BackgroundImageAssetStore
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "ChurchProjector",
         "BackgroundImages");
+
+    private static readonly object CacheLock = new();
+    private static readonly Dictionary<string, BackgroundImageAsset> Cache = new(
+        OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
 
     public static BackgroundImageAsset Import(string sourcePath)
     {
@@ -25,9 +75,7 @@ public static class BackgroundImageAssetStore
             throw new BackgroundImageException("The selected background image could not be read.", ex);
         }
 
-        SKImage image = SKImage.FromEncodedData(imageData)
-            ?? throw new BackgroundImageException("The selected file is not a supported image.");
-
+        Bitmap image = Decode(imageData, "The selected file is not a supported image.");
         string destinationPath = System.IO.Path.Combine(
             AssetDirectory,
             $"{Guid.NewGuid():N}{System.IO.Path.GetExtension(sourcePath)}");
@@ -36,7 +84,14 @@ public static class BackgroundImageAssetStore
         {
             Directory.CreateDirectory(AssetDirectory);
             File.WriteAllBytes(destinationPath, imageData);
-            return new BackgroundImageAsset(destinationPath, image);
+
+            BackgroundImageAsset asset = new(destinationPath, image);
+            lock (CacheLock)
+            {
+                Cache.Add(destinationPath, asset);
+            }
+
+            return asset;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException)
         {
@@ -55,27 +110,36 @@ public static class BackgroundImageAssetStore
         }
     }
 
-    public static SKImage Load(string path)
+    public static BackgroundImageAsset Load(string path)
     {
-        try
+        string fullPath = System.IO.Path.GetFullPath(path);
+        lock (CacheLock)
         {
-            byte[] imageData = File.ReadAllBytes(path);
-            return SKImage.FromEncodedData(imageData)
-                ?? throw new BackgroundImageException("The saved background image is not a supported image.");
-        }
-        catch (BackgroundImageException)
-        {
-            throw;
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException)
-        {
-            throw new BackgroundImageException("The saved background image could not be read.", ex);
+            if (Cache.TryGetValue(fullPath, out BackgroundImageAsset? cached))
+            {
+                return cached;
+            }
+
+            byte[] imageData;
+            try
+            {
+                imageData = File.ReadAllBytes(fullPath);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException)
+            {
+                throw new BackgroundImageException("The saved background image could not be read.", ex);
+            }
+
+            Bitmap image = Decode(imageData, "The saved background image is not a supported image.");
+            BackgroundImageAsset asset = new(fullPath, image);
+            Cache.Add(fullPath, asset);
+            return asset;
         }
     }
 
     public static void DeleteIfManaged(string? path)
     {
-        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+        if (string.IsNullOrWhiteSpace(path))
         {
             return;
         }
@@ -91,7 +155,28 @@ public static class BackgroundImageAssetStore
             return;
         }
 
-        File.Delete(fullPath);
+        lock (CacheLock)
+        {
+            if (Cache.Remove(fullPath, out BackgroundImageAsset? asset))
+            {
+                asset.Release();
+            }
+
+            File.Delete(fullPath);
+        }
+    }
+
+    private static Bitmap Decode(byte[] imageData, string errorMessage)
+    {
+        try
+        {
+            using MemoryStream stream = new(imageData);
+            return new Bitmap(stream);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException)
+        {
+            throw new BackgroundImageException(errorMessage, ex);
+        }
     }
 }
 

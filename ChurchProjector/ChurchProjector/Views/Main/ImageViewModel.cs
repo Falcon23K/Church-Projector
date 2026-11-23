@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ChurchProjector.Classes;
 using ChurchProjector.Views.Settings;
@@ -239,6 +240,7 @@ public partial class ImageViewModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowOutputMedia))]
     [NotifyPropertyChangedFor(nameof(ShowImage))]
+    [NotifyPropertyChangedFor(nameof(ShowBackgroundImage))]
     private bool _isMediaPresented;
 
     public bool ShowOutputMedia => ShowVideo && IsMediaPresented;
@@ -539,6 +541,31 @@ public partial class ImageViewModel : ObservableObject
 
     private CancellationTokenSource? _cancellationTokenSource = null;
 
+    public Bitmap? BackgroundImageSource
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                OnPropertyChanged(nameof(ShowBackgroundImage));
+            }
+        }
+    }
+
+    private bool _isNdiRendering;
+    public bool IsNdiRendering
+    {
+        get => _isNdiRendering;
+        set
+        {
+            if (SetProperty(ref _isNdiRendering, value))
+            {
+                OnPropertyChanged(nameof(ShowBackgroundImage));
+            }
+        }
+    }
+
     public IImage? ImageSource
     {
         get;
@@ -554,6 +581,7 @@ public partial class ImageViewModel : ObservableObject
             if (SetProperty(ref field, value))
             {
                 OnPropertyChanged(nameof(ShowImage));
+                OnPropertyChanged(nameof(ShowBackgroundImage));
             }
         }
     }
@@ -613,6 +641,7 @@ public partial class ImageViewModel : ObservableObject
     public bool ShowVideo => CurrentFileType == FileType.Movie;
     public bool ShowMediaControls => CurrentMediaPath is not null && CurrentFileType is FileType.Movie or FileType.Audio;
     public bool ShowImage => ImageSource is not null && !IsMediaPresented;
+    public bool ShowBackgroundImage => BackgroundImageSource is not null && ShowImage && !IsNdiRendering;
 
     private bool _isBannerVisible;
     public bool IsBannerVisible

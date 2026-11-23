@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SkiaSharp;
 
 namespace ChurchProjector.Classes.Configuration.Image;
 
 public class ImageCreationConfiguration : ObservableObject
 {
     private readonly object _backgroundImageLock = new();
-    private SKImage? _backgroundImage;
+    private BackgroundImageAsset? _backgroundImageAsset;
+    private string? _cachedBackgroundImagePath;
     private string? _backgroundImagePath;
 
     public string? BackgroundImagePath
@@ -16,16 +16,18 @@ public class ImageCreationConfiguration : ObservableObject
         {
             lock (_backgroundImageLock)
             {
-                if (SetProperty(ref _backgroundImagePath, value))
+                if (_backgroundImagePath != value)
                 {
-                    _backgroundImage?.Dispose();
-                    _backgroundImage = null;
+                    _backgroundImageAsset?.Release();
+                    _backgroundImageAsset = null;
+                    _cachedBackgroundImagePath = null;
+                    SetProperty(ref _backgroundImagePath, value);
                 }
             }
         }
     }
 
-    public SKImage? GetBackgroundImage()
+    public BackgroundImageAsset? GetBackgroundImageAsset()
     {
         lock (_backgroundImageLock)
         {
@@ -34,16 +36,28 @@ public class ImageCreationConfiguration : ObservableObject
                 return null;
             }
 
-            return _backgroundImage ??= BackgroundImageAssetStore.Load(_backgroundImagePath);
+            if (_backgroundImageAsset is not null
+                && _cachedBackgroundImagePath == _backgroundImagePath)
+            {
+                return _backgroundImageAsset;
+            }
+
+            _backgroundImageAsset?.Release();
+            _backgroundImageAsset = BackgroundImageAssetStore.Load(_backgroundImagePath);
+            _backgroundImageAsset.AddReference();
+            _cachedBackgroundImagePath = _backgroundImagePath;
+            return _backgroundImageAsset;
         }
     }
 
-    public void SetBackgroundImage(string? path, SKImage? image)
+    public void SetBackgroundImage(string? path, BackgroundImageAsset? imageAsset)
     {
         lock (_backgroundImageLock)
         {
-            _backgroundImage?.Dispose();
-            _backgroundImage = image;
+            imageAsset?.AddReference();
+            _backgroundImageAsset?.Release();
+            _backgroundImageAsset = imageAsset;
+            _cachedBackgroundImagePath = path;
             SetProperty(ref _backgroundImagePath, path, nameof(BackgroundImagePath));
         }
     }

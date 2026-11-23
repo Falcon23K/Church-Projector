@@ -153,6 +153,7 @@ public partial class MainViewModel : ObservableObject
     {
         ImageWithName? previouslyDisplayedImage = _displayedImage;
         _displayedImage = image;
+        ImageWindow.ViewModel.BackgroundImageSource = image.BackgroundImage;
         ImageWindow.ViewModel.ImageSource = image.Image;
         ImageWindow.ViewModel.IsNdiTextSlide = image.IsTextSlide;
 
@@ -188,8 +189,15 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
+            BackgroundImageAsset? backgroundImageAsset =
+                GlobalConfig.JsonFile.Settings.DisplayConfiguration.SongConfiguration.GetBackgroundImageAsset();
             RenderImages(song.Title ?? string.Empty, song.GetImages().ConvertAll(x =>
-                new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)),
+                new ImageWithName(
+                    x.title,
+                    x.bitmap,
+                    x.isOverflowing,
+                    isTextSlide: true,
+                    backgroundImageAsset: backgroundImageAsset)),
                 addToHistory, filename ?? song.FilePath);
         }
         catch (BackgroundImageException ex)
@@ -500,7 +508,7 @@ public partial class MainViewModel : ObservableObject
 
                 try
                 {
-                    _ = GlobalConfig.JsonFile.Settings.DisplayConfiguration.BibleConfiguration.GetBackgroundImage();
+                    _ = GlobalConfig.JsonFile.Settings.DisplayConfiguration.BibleConfiguration.GetBackgroundImageAsset();
                 }
                 catch (BackgroundImageException ex)
                 {
@@ -509,6 +517,8 @@ public partial class MainViewModel : ObservableObject
                     return;
                 }
 
+                BackgroundImageAsset? backgroundImageAsset =
+                    GlobalConfig.JsonFile.Settings.DisplayConfiguration.BibleConfiguration.GetBackgroundImageAsset();
                 List<ImageWithName> images = ranges.AsParallel()
                     .Select((range, i) =>
                     {
@@ -521,7 +531,12 @@ public partial class MainViewModel : ObservableObject
                         return new
                         {
                             Index = i,
-                            Image = new ImageWithName(BibleViewModel.SelectedBiblePosition, bitmap, isOverflowing, isTextSlide: true),
+                            Image = new ImageWithName(
+                                BibleViewModel.SelectedBiblePosition,
+                                bitmap,
+                                isOverflowing,
+                                isTextSlide: true,
+                                backgroundImageAsset: backgroundImageAsset),
                         };
                     }).OrderBy(x => x.Index)
                     .Select(x => x.Image)

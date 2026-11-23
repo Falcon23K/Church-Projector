@@ -247,7 +247,9 @@ public partial class ImageWindow : Window
             _ndiBlankFrameSent = false;
             _ndiTransparentPixels = null;
             IBrush? originalBackground = Background;
+            bool originalNdiRendering = ViewModel.IsNdiRendering;
             Background = Brushes.Transparent;
+            ViewModel.IsNdiRendering = true;
             try
             {
                 _ndiRenderTarget.Render(this);
@@ -255,6 +257,7 @@ public partial class ImageWindow : Window
             finally
             {
                 Background = originalBackground;
+                ViewModel.IsNdiRendering = originalNdiRendering;
             }
 
             using ILockedFramebuffer framebuffer = _ndiFrame.Lock();

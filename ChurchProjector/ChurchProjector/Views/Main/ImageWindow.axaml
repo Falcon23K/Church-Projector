@@ -19,6 +19,15 @@
 
 	<Grid RowDefinitions="*,Auto" ColumnDefinitions="*,Auto">
 		<Image
+            Name="BackgroundImageView"
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            IsVisible="{Binding ShowBackgroundImage}"
+            Source="{Binding BackgroundImageSource}"
+            Opacity="{Binding Opacity}"
+			Stretch="Fill" />
+
+		<Image
             Name="ImageView"
             Grid.Row="0"
             Grid.ColumnSpan="2"
