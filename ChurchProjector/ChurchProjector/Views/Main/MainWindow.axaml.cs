@@ -56,8 +56,8 @@ public partial class MainWindow : Window
 
         _viewModel.PropertyChanged += _viewModel_PropertyChanged;
 
-        _viewModel.OpenSongQuickSearchCommand = new RelayCommand(() => new SongQuickSearch() { OpenSong = _viewModel.RenderImages, }.ShowDialog(this));
-        _viewModel.OpenSongSearchCommand = new RelayCommand(() => new SongSearch() { OpenSong = _viewModel.RenderImages, }.ShowDialog(this));
+        _viewModel.OpenSongQuickSearchCommand = new RelayCommand(() => new SongQuickSearch() { OpenSong = song => _viewModel.RenderSong(song), }.ShowDialog(this));
+        _viewModel.OpenSongSearchCommand = new RelayCommand(() => new SongSearch() { OpenSong = song => _viewModel.RenderSong(song), }.ShowDialog(this));
         _viewModel.OpenBibleSearchCommand = new RelayCommand(() => new BibleSearchWindow(_viewModel.BibleViewModel.SelectedBible1, string.Empty) { OpenVerse = _viewModel.OpenVerse, }.ShowDialog(this));
         _viewModel.HideImageCommand = new RelayCommand<bool>((bool fadeOut) => _viewModel.HideImage(fadeOut));
         _viewModel.OpenShowNotificationCommand = new RelayCommand(async () =>
@@ -98,7 +98,7 @@ public partial class MainWindow : Window
             {
                 // TODO Auto select slide?
                 // Remove old entry from history?
-                _viewModel.RenderImages(songEditWindow.Song.Title, songEditWindow.Song.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), songEditWindow.Song.FilePath);
+                _viewModel.RenderSong(songEditWindow.Song);
             }
         });
         _viewModel.AddSongCommand = new RelayCommand(() => new SongEditWindow().ShowDialog(this));

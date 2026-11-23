@@ -23,6 +23,24 @@ namespace ChurchProjector.Lang {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
+
+        public static string BackgroundImage_Colon {
+            get {
+                return ResourceManager.GetString("BackgroundImage_Colon", resourceCulture);
+            }
+        }
+
+        public static string BackgroundImageImportFailed {
+            get {
+                return ResourceManager.GetString("BackgroundImageImportFailed", resourceCulture);
+            }
+        }
+
+        public static string BackgroundImageLoadFailed {
+            get {
+                return ResourceManager.GetString("BackgroundImageLoadFailed", resourceCulture);
+            }
+        }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         public static System.Resources.ResourceManager ResourceManager {
@@ -782,6 +800,12 @@ namespace ChurchProjector.Lang {
                 return ResourceManager.GetString("HistoryClear", resourceCulture);
             }
         }
+
+        public static string Images {
+            get {
+                return ResourceManager.GetString("Images", resourceCulture);
+            }
+        }
         
         public static string InitWindowTitle {
             get {
@@ -804,6 +828,18 @@ namespace ChurchProjector.Lang {
         public static string Selection {
             get {
                 return ResourceManager.GetString("Selection", resourceCulture);
+            }
+        }
+
+        public static string RemoveImage {
+            get {
+                return ResourceManager.GetString("RemoveImage", resourceCulture);
+            }
+        }
+
+        public static string SelectImage {
+            get {
+                return ResourceManager.GetString("SelectImage", resourceCulture);
             }
         }
         

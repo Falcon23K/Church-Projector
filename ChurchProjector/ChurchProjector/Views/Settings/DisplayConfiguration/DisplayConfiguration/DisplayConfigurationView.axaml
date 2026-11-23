@@ -4,12 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dic="clr-namespace:ChurchProjector.Views.Settings.DisplayConfiguration.DisplayItemConfiguration"
+		xmlns:converters="clr-namespace:ChurchProjector.Converters"
 		xmlns:images="clr-namespace:ChurchProjector.Classes.Configuration.Image"
 		xmlns:lang="clr-namespace:ChurchProjector.Lang"
 		mc:Ignorable="d"
 		x:DataType="images:ImageCreationConfiguration">
 
+	<UserControl.Resources>
+		<converters:StringIsNotEmptyConverter x:Key="StringIsNotEmptyConverter" />
+	</UserControl.Resources>
+
 	<StackPanel>
+		<Grid ColumnDefinitions="auto,*,auto,auto" Margin="0 0 0 8">
+			<TextBlock Grid.Column="0" Text="{x:Static lang:Resources.BackgroundImage_Colon}" VerticalAlignment="Center" />
+			<TextBox Grid.Column="1" Text="{Binding BackgroundImagePath}" IsReadOnly="True" Margin="5 0" />
+			<Button Grid.Column="2" Content="{x:Static lang:Resources.SelectImage}" Click="OnSelectBackgroundImageClick" Margin="0 0 5 0" />
+			<Button Grid.Column="3" Content="{x:Static lang:Resources.RemoveImage}" Click="OnRemoveBackgroundImageClick" IsEnabled="{Binding BackgroundImagePath, Converter={StaticResource StringIsNotEmptyConverter}}" />
+		</Grid>
+		<TextBlock x:Name="BackgroundImageErrorMessage" Foreground="{DynamicResource ErrorBackground}" IsVisible="False" Margin="0 0 0 5" />
+		<Separator />
+
 		<TextBlock Text="{x:Static lang:Resources.Header}" />
 		<dic:DisplayItemConfigurationView DataContext="{Binding Header}" Margin="10 5 0 5" />
 		<Separator />

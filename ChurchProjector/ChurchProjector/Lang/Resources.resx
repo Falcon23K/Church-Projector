@@ -527,4 +527,22 @@ The paths can be edited later in the settings.</value>
   <data name="TimerDurationRequired" xml:space="preserve">
     <value>Please enter a duration greater than zero.</value>
   </data>
+  <data name="BackgroundImage_Colon" xml:space="preserve">
+    <value>Background image:</value>
+  </data>
+  <data name="BackgroundImageImportFailed" xml:space="preserve">
+    <value>The background image could not be loaded or saved. The previous selection was kept.</value>
+  </data>
+  <data name="BackgroundImageLoadFailed" xml:space="preserve">
+    <value>The saved background image is unavailable or invalid. Select it again in settings.</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="RemoveImage" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SelectImage" xml:space="preserve">
+    <value>Select image</value>
+  </data>
 </root>

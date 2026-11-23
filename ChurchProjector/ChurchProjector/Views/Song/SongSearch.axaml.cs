@@ -1,9 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
-using ChurchProjector.Classes;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 
 namespace ChurchProjector.Views.Song;
 public partial class SongSearch : Window
@@ -23,7 +21,7 @@ public partial class SongSearch : Window
                 {
                     return;
                 }
-                OpenSong?.Invoke(_viewModel.SelectedSong.Title, _viewModel.SelectedSong.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), _viewModel.SelectedSong.FilePath);
+                OpenSong?.Invoke(_viewModel.SelectedSong);
                 Close();
             }),
         };
@@ -31,7 +29,7 @@ public partial class SongSearch : Window
         TxtSearchBox.AttachedToVisualTree += TxtShortcut_AttachedToVisualTree;
     }
 
-    public required Action<string, List<ImageWithName>, string> OpenSong { get; set; }
+    public required Action<ChurchProjector.Classes.Song> OpenSong { get; set; }
 
     // https://github.com/AvaloniaUI/Avalonia/issues/4835#issuecomment-706530463
     private void TxtShortcut_AttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)

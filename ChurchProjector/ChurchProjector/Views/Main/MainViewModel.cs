@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using Avalonia.Platform.Storage;
 using ChurchProjector.Classes;
+using ChurchProjector.Classes.Configuration.Image;
 using ChurchProjector.Classes.History;
 using ChurchProjector.Views.Bible;
 using ChurchProjector.Views.History;
@@ -22,6 +23,7 @@ using ChurchProjector.Classes.Schedule;
 using ChurchProjector.Views.Notification;
 using ChurchProjector.Views.Notifications;
 using MuPDFCore;
+using Serilog;
 using static ChurchProjector.Classes.DrawingHelper;
 
 namespace ChurchProjector.Views.Main;
@@ -180,6 +182,21 @@ public partial class MainViewModel : ObservableObject
     public void RenderImages(string title, List<ImageWithName> images, string? filename = null)
     {
         RenderImages(title, images, addToHistory: true, filename);
+    }
+
+    public void RenderSong(Classes.Song song, bool addToHistory = true, string? filename = null)
+    {
+        try
+        {
+            RenderImages(song.Title ?? string.Empty, song.GetImages().ConvertAll(x =>
+                new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)),
+                addToHistory, filename ?? song.FilePath);
+        }
+        catch (BackgroundImageException ex)
+        {
+            Log.Error(ex, "Unable to render song with its configured background image");
+            Notifications.Show(Lang.Resources.BackgroundImageLoadFailed, NotificationType.Error);
+        }
     }
 
     public void RenderImages(string title, List<ImageWithName> images, bool addToHistory, string? filename = null)
@@ -354,9 +371,7 @@ public partial class MainViewModel : ObservableObject
                 else if (fileType == FileType.Song)
                 {
                     Classes.Song song = Classes.Song.LoadFromFile(scheduleEntry.FilePath);
-                    RenderImages(song.Title,
-                        song.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), false,
-                        scheduleEntry.FilePath);
+                    RenderSong(song, addToHistory: false, filename: scheduleEntry.FilePath);
                 }
             }),
         };
@@ -481,6 +496,17 @@ public partial class MainViewModel : ObservableObject
                             break;
                         }
                     }
+                }
+
+                try
+                {
+                    _ = GlobalConfig.JsonFile.Settings.DisplayConfiguration.BibleConfiguration.GetBackgroundImage();
+                }
+                catch (BackgroundImageException ex)
+                {
+                    Log.Error(ex, "Unable to load the configured Bible background image");
+                    Notifications.Show(Lang.Resources.BackgroundImageLoadFailed, NotificationType.Error);
+                    return;
                 }
 
                 List<ImageWithName> images = ranges.AsParallel()

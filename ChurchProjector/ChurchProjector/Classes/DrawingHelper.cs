@@ -202,6 +202,7 @@ public static class DrawingHelper
     {
         bool disableLineBreaks = imageCreation.LangCount != 1;
 
+        SKImage? backgroundImage = imageCreation.Configuration.GetBackgroundImage();
         SKBitmap bitmap = new(_width, _height);
         using SKFont _font = new();
         using SKCanvas? canvas = new(bitmap);
@@ -211,6 +212,10 @@ public static class DrawingHelper
             IsAntialias = true,
         };
         canvas.Clear(SKColors.Transparent);
+        if (backgroundImage is not null)
+        {
+            canvas.DrawImage(backgroundImage, new SKRect(0, 0, _width, _height));
+        }
 
         // The first call is a bit flaggy and doesn't always return the correct text size.
         _ = GetMaxTextSize(_font,
