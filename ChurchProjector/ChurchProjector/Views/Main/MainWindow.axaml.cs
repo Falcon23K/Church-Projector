@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
 using ChurchProjector.Classes;
+using ChurchProjector.Classes.Ndi;
 using ChurchProjector.Views.Bible;
 using ChurchProjector.Views.Notification;
 using ChurchProjector.Views.Settings;
@@ -97,7 +98,7 @@ public partial class MainWindow : Window
             {
                 // TODO Auto select slide?
                 // Remove old entry from history?
-                _viewModel.RenderImages(songEditWindow.Song.Title, songEditWindow.Song.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing)), songEditWindow.Song.FilePath);
+                _viewModel.RenderImages(songEditWindow.Song.Title, songEditWindow.Song.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), songEditWindow.Song.FilePath);
             }
         });
         _viewModel.AddSongCommand = new RelayCommand(() => new SongEditWindow().ShowDialog(this));
@@ -193,6 +194,7 @@ public partial class MainWindow : Window
         _cancellationTokenSource.Cancel();
         GlobalConfig.SaveChanges();
         _viewModel.StopAll();
+        NdiSender.ShutdownRuntime();
         Environment.Exit(0);
     }
 

@@ -30,7 +30,7 @@ public partial class SongQuickSearch : Window
                     return;
                 }
 
-                OpenSong?.Invoke(selectedSong.Title, selectedSong.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing)), selectedSong.FilePath);
+                OpenSong?.Invoke(selectedSong.Title, selectedSong.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), selectedSong.FilePath);
                 Close();
             }),
         };

@@ -36,7 +36,7 @@
 			Grid.Column="0"
 			Grid.ColumnSpan="3">
 			<TabItem Header="{x:Static lang:Resources.Window}">
-				<Grid RowDefinitions="auto,auto,auto,auto,auto,auto">
+				<Grid RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="auto" />
 						<ColumnDefinition Width="*" MinWidth="150" />
@@ -131,6 +131,70 @@
 						Grid.Row="5"
 						Margin="5"
 						IsChecked="{Binding Settings.ShowClock}" />
+
+					<!-- NDI output -->
+					<Label
+						Grid.Column="0"
+						Grid.Row="7"
+						VerticalAlignment="Center"
+						Content="{x:Static lang:Resources.NdiOutput_Colon}" />
+					<CheckBox
+						Grid.Column="1"
+						Grid.Row="7"
+						Margin="5"
+						IsChecked="{Binding Settings.OutputDisplaySettings.NdiEnabled}" />
+
+					<Label
+						Grid.Column="0"
+						Grid.Row="9"
+						VerticalAlignment="Center"
+						Content="{x:Static lang:Resources.NdiSourceName_Colon}"
+						IsVisible="{Binding Settings.OutputDisplaySettings.NdiEnabled}" />
+					<TextBox
+						Grid.Column="1"
+						Grid.Row="9"
+						Margin="5"
+						MaxLength="253"
+						Text="{Binding Settings.OutputDisplaySettings.NdiSourceName, UpdateSourceTrigger=LostFocus}"
+						IsVisible="{Binding Settings.OutputDisplaySettings.NdiEnabled}" />
+
+					<StackPanel
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						Grid.Row="10"
+						Spacing="4"
+						IsVisible="{Binding Settings.OutputDisplaySettings.NdiEnabled}">
+						<TextBlock
+							FontSize="12"
+							Foreground="Gray"
+							MaxWidth="420"
+							TextWrapping="Wrap"
+							Text="{x:Static lang:Resources.NdiOutputInfo}" />
+						<HyperlinkButton
+							HorizontalAlignment="Left"
+							Click="BtnOpenNdiRuntimeLink_Click"
+							Content="{x:Static lang:Resources.NdiWebsite}" />
+					</StackPanel>
+
+					<StackPanel
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						Grid.Row="8"
+						Spacing="4">
+						<HyperlinkButton
+							HorizontalAlignment="Left"
+							Click="BtnOpenLink_Click"
+							Tag="https://ndi.video/"
+							Content="ndi.video" />
+					</StackPanel>
+
+					<TextBlock
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						Grid.Row="11"
+						FontSize="12"
+						Foreground="Gray"
+						Text="NDI® is a registered trademark of Vizrt NDI AB." />
 				</Grid>
 			</TabItem>
 

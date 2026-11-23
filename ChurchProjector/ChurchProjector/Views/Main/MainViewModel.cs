@@ -152,6 +152,7 @@ public partial class MainViewModel : ObservableObject
         ImageWithName? previouslyDisplayedImage = _displayedImage;
         _displayedImage = image;
         ImageWindow.ViewModel.ImageSource = image.Image;
+        ImageWindow.ViewModel.IsNdiTextSlide = image.IsTextSlide;
 
         if (previouslyDisplayedImage is null || previouslyDisplayedImage == image)
         {
@@ -222,6 +223,8 @@ public partial class MainViewModel : ObservableObject
         ImageWindow = new ImageWindow(Settings);
         Settings.RecreateBanner += ImageWindow.CreateBanner;
         ImageWindow.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        ImageWindow.NdiOutputFailed += error => Notifications.Show(error, NotificationType.Error);
+        ImageWindow.StartNdiOutput();
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -352,7 +355,7 @@ public partial class MainViewModel : ObservableObject
                 {
                     Classes.Song song = Classes.Song.LoadFromFile(scheduleEntry.FilePath);
                     RenderImages(song.Title,
-                        song.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing)), false,
+                        song.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), false,
                         scheduleEntry.FilePath);
                 }
             }),
@@ -492,7 +495,7 @@ public partial class MainViewModel : ObservableObject
                         return new
                         {
                             Index = i,
-                            Image = new ImageWithName(BibleViewModel.SelectedBiblePosition, bitmap, isOverflowing),
+                            Image = new ImageWithName(BibleViewModel.SelectedBiblePosition, bitmap, isOverflowing, isTextSlide: true),
                         };
                     }).OrderBy(x => x.Index)
                     .Select(x => x.Image)
@@ -600,6 +603,7 @@ public partial class MainViewModel : ObservableObject
     {
         ImageWindow.StopBanner();
         ImageWindow.ViewModel.StopCountdown();
+        ImageWindow.StopNdiOutput();
         ImageWindow.Hide();
         ImageWindow.ViewModel.StopMedia();
         ImageWindow.ViewModel.ImageSource = null;

@@ -106,6 +106,18 @@ public class DisplayConfiguration : ObservableObject
 public partial class OutputDisplaySettings : ObservableObject
 {
     public bool TopMost { get; set; } = true;
+
+    public bool NdiEnabled
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string? NdiSourceName
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "Church-Projector";
 }
 
 public class BannerSettings

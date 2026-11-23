@@ -23,7 +23,7 @@ public partial class SongSearch : Window
                 {
                     return;
                 }
-                OpenSong?.Invoke(_viewModel.SelectedSong.Title, _viewModel.SelectedSong.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing)), _viewModel.SelectedSong.FilePath);
+                OpenSong?.Invoke(_viewModel.SelectedSong.Title, _viewModel.SelectedSong.GetImages().ConvertAll(x => new ImageWithName(x.title, x.bitmap, x.isOverflowing, isTextSlide: true)), _viewModel.SelectedSong.FilePath);
                 Close();
             }),
         };

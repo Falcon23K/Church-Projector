@@ -274,6 +274,30 @@
   <data name="Monitor_Colon" xml:space="preserve">
     <value>Monitor:</value>
   </data>
+  <data name="NdiOutput_Colon" xml:space="preserve">
+    <value>Enable NDI® output:</value>
+  </data>
+  <data name="NdiSourceName_Colon" xml:space="preserve">
+    <value>NDI source name:</value>
+  </data>
+  <data name="NdiOutputInfo" xml:space="preserve">
+    <value>Install the NDI Runtime separately before using NDI output. NDI Tools are optional. Song/Bible text and visible text overlays are sent with a transparent background; images and video are not sent.</value>
+  </data>
+  <data name="NdiWebsite" xml:space="preserve">
+    <value>Download NDI Runtime</value>
+  </data>
+  <data name="NdiRuntimeMissing" xml:space="preserve">
+    <value>The NDI Runtime could not be loaded. Install it separately and make sure it is accessible to Church-Projector.</value>
+  </data>
+  <data name="NdiRuntimeMissingLinux" xml:space="preserve">
+    <value>The NDI Runtime could not be loaded. Install it separately and make sure it is accessible to Church-Projector. If it is in a custom location, set NDI_RUNTIME_DIR_V6 to its directory.</value>
+  </data>
+  <data name="NdiOutputError" xml:space="preserve">
+    <value>NDI output could not start: {0}</value>
+  </data>
+  <data name="NdiSourceNameEmpty" xml:space="preserve">
+    <value>The NDI source name cannot be empty.</value>
+  </data>
   <data name="AlwaysOnTop_Colon" xml:space="preserve">
     <value>Always on top:</value>
   </data>

@@ -5,6 +5,7 @@ Church-Projector is an alternative to SongBeamer for projecting song lyrics, Bib
 ## Features
 
 - **Song Display**: Project song lyrics with a simple and user-friendly interface.
+- **NDI® Output**: Optionally send song and Bible text with a transparent background while keeping the projector output active. Images and video are not sent over NDI.
 - **Bible Search**: Quickly find and display Bible verses in various translations.
 - **Multilingual Support**: Display texts in multiple languages to meet different linguistic needs.
 - **Easy-to-use Interface**: Simple navigation and layout for quick song and verse projection.
@@ -25,6 +26,11 @@ Church-Projector is an alternative to SongBeamer for projecting song lyrics, Bib
   - **Programming Language**: C#
   - **UI Framework**: Avalonia
 
+## NDI Output
+
+Enable **NDI output** in Settings -> Window and set the source name that will appear to NDI receivers. NDI sends generated song and Bible text and visible text overlays with a transparent background; images and video are excluded. Install the NDI Runtime separately before using NDI output; NDI Tools are optional. Downloads: [Windows](https://downloads.ndi.tv/SDK/NDI_SDK/NDI%206%20Runtime.exe), [macOS](https://downloads.ndi.tv/SDK/NDI_SDK_Mac/libNDI_for_Mac.pkg), and [Linux](https://downloads.ndi.tv/SDK/NDI_SDK_Linux/Install_NDI_SDK_v6_Linux.tar.gz). Church-Projector looks for the installed runtime in standard locations and supports `NDI_RUNTIME_DIR_V6` as an environment variable for custom locations.
+
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests to improve the application.
@@ -32,3 +38,7 @@ Contributions are welcome! Please feel free to submit issues, feature requests, 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+*NDI® is a registered trademark of Vizrt NDI AB. Learn more at [ndi.video](https://ndi.video/).*

@@ -270,6 +270,30 @@
   <data name="Monitor_Colon" xml:space="preserve">
     <value>Bildschirm:</value>
   </data>
+  <data name="NdiOutput_Colon" xml:space="preserve">
+    <value>NDI®-Ausgabe aktivieren:</value>
+  </data>
+  <data name="NdiSourceName_Colon" xml:space="preserve">
+    <value>NDI-Quellenname:</value>
+  </data>
+  <data name="NdiOutputInfo" xml:space="preserve">
+    <value>Vor der Verwendung der NDI-Ausgabe muss die NDI Runtime separat installiert werden. NDI Tools sind optional. Lied-/Bibeltext und sichtbare Texteinblendungen werden mit transparentem Hintergrund übertragen; Bilder und Videos werden nicht übertragen.</value>
+  </data>
+  <data name="NdiWebsite" xml:space="preserve">
+    <value>NDI Runtime herunterladen</value>
+  </data>
+  <data name="NdiRuntimeMissing" xml:space="preserve">
+    <value>Die NDI Runtime konnte nicht geladen werden. Stelle sicher, dass sie installiert und für Church-Projector zugänglich ist.</value>
+  </data>
+  <data name="NdiRuntimeMissingLinux" xml:space="preserve">
+    <value>Die NDI Runtime konnte nicht geladen werden. Installiere sie separat und stelle sicher, dass sie für Church-Projector zugänglich ist. Bei einem eigenen Speicherort setze NDI_RUNTIME_DIR_V6 auf den entsprechenden Ordner.</value>
+  </data>
+  <data name="NdiOutputError" xml:space="preserve">
+    <value>Die NDI-Ausgabe konnte nicht gestartet werden: {0}</value>
+  </data>
+  <data name="NdiSourceNameEmpty" xml:space="preserve">
+    <value>Der NDI-Quellenname darf nicht leer sein.</value>
+  </data>
   <data name="AlwaysOnTop_Colon" xml:space="preserve">
     <value>Immer im Vordergrund:</value>
   </data>

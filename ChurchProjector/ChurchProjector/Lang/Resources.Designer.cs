@@ -356,6 +356,54 @@ namespace ChurchProjector.Lang {
                 return ResourceManager.GetString("Monitor_Colon", resourceCulture);
             }
         }
+
+        public static string NdiOutput_Colon {
+            get {
+                return ResourceManager.GetString("NdiOutput_Colon", resourceCulture);
+            }
+        }
+
+        public static string NdiSourceName_Colon {
+            get {
+                return ResourceManager.GetString("NdiSourceName_Colon", resourceCulture);
+            }
+        }
+
+        public static string NdiOutputInfo {
+            get {
+                return ResourceManager.GetString("NdiOutputInfo", resourceCulture);
+            }
+        }
+
+        public static string NdiWebsite {
+            get {
+                return ResourceManager.GetString("NdiWebsite", resourceCulture);
+            }
+        }
+
+        public static string NdiRuntimeMissing {
+            get {
+                return ResourceManager.GetString("NdiRuntimeMissing", resourceCulture);
+            }
+        }
+
+        public static string NdiRuntimeMissingLinux {
+            get {
+                return ResourceManager.GetString("NdiRuntimeMissingLinux", resourceCulture);
+            }
+        }
+
+        public static string NdiOutputError {
+            get {
+                return ResourceManager.GetString("NdiOutputError", resourceCulture);
+            }
+        }
+
+        public static string NdiSourceNameEmpty {
+            get {
+                return ResourceManager.GetString("NdiSourceNameEmpty", resourceCulture);
+            }
+        }
         
         public static string AlwaysOnTop_Colon {
             get {

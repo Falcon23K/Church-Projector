@@ -546,12 +546,20 @@ public partial class ImageViewModel : ObservableObject
         {
             _cancellationTokenSource?.Cancel();
             Opacity = 1;
+            if (value is null)
+            {
+                IsNdiTextSlide = false;
+            }
+
             if (SetProperty(ref field, value))
             {
                 OnPropertyChanged(nameof(ShowImage));
             }
         }
     }
+
+    [ObservableProperty]
+    private bool _isNdiTextSlide;
 
     [ObservableProperty]
     private double _opacity = 1;

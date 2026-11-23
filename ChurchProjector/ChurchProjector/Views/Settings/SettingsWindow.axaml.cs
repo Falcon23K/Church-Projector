@@ -2,6 +2,7 @@
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using ChurchProjector.Classes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -90,5 +91,28 @@ public partial class SettingsWindow : Window
                 });
             }
         }
+    }
+
+    private void BtnOpenNdiRuntimeLink_Click(object? sender, RoutedEventArgs e)
+    {
+        string url;
+        if (OperatingSystem.IsWindows())
+        {
+            url = "https://downloads.ndi.tv/SDK/NDI_SDK/NDI%206%20Runtime.exe";
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            url = "https://downloads.ndi.tv/SDK/NDI_SDK_Linux/Install_NDI_SDK_v6_Linux.tar.gz";
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            url = "https://downloads.ndi.tv/SDK/NDI_SDK_Mac/libNDI_for_Mac.pkg";
+        }
+        else
+        {
+            throw new PlatformNotSupportedException("NDI Runtime downloads are not available for this platform.");
+        }
+
+        Link.OpenLink(url);
     }
 }

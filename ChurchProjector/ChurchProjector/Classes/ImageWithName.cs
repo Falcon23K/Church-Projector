@@ -2,11 +2,12 @@
 using System;
 
 namespace ChurchProjector.Classes;
-public class ImageWithName(string title, Bitmap image, bool isOverflowing) : IDisposable
+public class ImageWithName(string title, Bitmap image, bool isOverflowing, bool isTextSlide = false) : IDisposable
 {
     public string Title { get; set; } = title;
     public Bitmap Image { get; set; } = image;
     public bool IsOverflowing { get; set; } = isOverflowing;
+    public bool IsTextSlide { get; set; } = isTextSlide;
 
     public void Dispose()
     {

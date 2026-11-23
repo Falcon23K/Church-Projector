@@ -46,7 +46,6 @@
 				Foreground="White"
 				VerticalAlignment="Bottom"
 				Padding="10"
-				Background="Black"
 				ZIndex="1" />
 			<StackPanel
 				Name="SpBanner"
@@ -65,7 +64,6 @@
 			HorizontalAlignment="Right"
 			VerticalAlignment="Bottom"
 			Padding="10"
-			Background="Black"
 			ZIndex="2" />
 	</Grid>
 </Window>

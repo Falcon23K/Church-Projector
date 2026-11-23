@@ -210,7 +210,7 @@ public static class DrawingHelper
         {
             IsAntialias = true,
         };
-        canvas.DrawColor(SKColor.Parse("#000000"));
+        canvas.Clear(SKColors.Transparent);
 
         // The first call is a bit flaggy and doesn't always return the correct text size.
         _ = GetMaxTextSize(_font,
