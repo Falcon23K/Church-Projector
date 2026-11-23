@@ -123,6 +123,12 @@ public partial class SettingsViewModel : ObservableObject
         set => GlobalConfig.JsonFile.Settings.SongSettings.ShowFirstLineOfNextSong = value;
     }
 
+    public bool ShowSongTitleOnFirstSlide
+    {
+        get => GlobalConfig.JsonFile.Settings.SongSettings.ShowSongTitleOnFirstSlide;
+        set => GlobalConfig.JsonFile.Settings.SongSettings.ShowSongTitleOnFirstSlide = value;
+    }
+
     public string? SongEnd
     {
         get => GlobalConfig.JsonFile.Settings.SongSettings.SongEnd;

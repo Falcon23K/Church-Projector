@@ -327,6 +327,9 @@
   <data name="SongShowFirstLineOfNextSong_Colon" xml:space="preserve">
     <value>Erste Zeile des nächsten Liedes anzeigen:</value>
   </data>
+  <data name="SongShowTitleOnFirstSlide_Colon" xml:space="preserve">
+    <value>Liedtitel auf der ersten Folie anzeigen:</value>
+  </data>
   <data name="SongEnd_Colon" xml:space="preserve">
     <value>Liedende:</value>
   </data>

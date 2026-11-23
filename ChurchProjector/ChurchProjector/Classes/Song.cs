@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using ChurchProjector.Classes.Configuration.Image;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -258,6 +259,8 @@ public static class SongExtensions
                     content.Add(new DrawingHelper.TextLine(songEnd));
                 }
 
+                bool showTitleAsHeader = index == 0 && GlobalConfig.JsonFile.Settings.SongSettings.ShowSongTitleOnFirstSlide && !string.IsNullOrWhiteSpace(song.Title);
+
                 var renderResult = new DrawingHelper.ImageCreation()
                 {
                     Configuration = GlobalConfig.JsonFile.Settings.DisplayConfiguration.SongConfiguration,
@@ -266,7 +269,8 @@ public static class SongExtensions
                     [
                         new DrawingHelper.ImageCreationContent
                         {
-                            Header = song.ChurchSongID,
+                            Header = showTitleAsHeader ? song.Title : song.ChurchSongID,
+                            HeaderHorizontalAlignment = showTitleAsHeader ? HorizontalAlignment.Center : null,
                             Content = content,
                         }
                     ]

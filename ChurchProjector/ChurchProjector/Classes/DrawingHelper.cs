@@ -256,7 +256,8 @@ public static class DrawingHelper
             if (!string.IsNullOrWhiteSpace(imageCreationItem.Header))
             {
                 int langIndex = imageCreation.ImageCreationContent.IndexOf(imageCreationItem);
-                DrawText(new TextLine(imageCreationItem.Header), imageCreation.Configuration.Header.HorizontalAlignment, imageCreation.Configuration.Header.GetColor(langIndex), textSizes.headerTextSize);
+                HorizontalAlignment headerAlignment = imageCreationItem.HeaderHorizontalAlignment?? imageCreation.Configuration.Header.HorizontalAlignment;
+                DrawText(new TextLine(imageCreationItem.Header), headerAlignment, imageCreation.Configuration.Header.GetColor(langIndex), textSizes.headerTextSize);
             }
             foreach (var line in imageCreationItem.Content)
             {
@@ -371,6 +372,7 @@ public static class DrawingHelper
     public class ImageCreationContent
     {
         public required string Header { get; set; }
+        public HorizontalAlignment? HeaderHorizontalAlignment { get; set; }
         public required List<TextLine> Content { get; set; }
         public string? Bottom { get; set; }
     }

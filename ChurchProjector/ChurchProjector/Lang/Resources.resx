@@ -331,6 +331,9 @@
   <data name="SongShowFirstLineOfNextSong_Colon" xml:space="preserve">
     <value>Show first line of next song:</value>
   </data>
+  <data name="SongShowTitleOnFirstSlide_Colon" xml:space="preserve">
+    <value>Show song title on first slide:</value>
+  </data>
   <data name="SongEnd_Colon" xml:space="preserve">
     <value>Song end:</value>
   </data>
